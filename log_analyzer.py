@@ -14,7 +14,7 @@ def run_local_llm(prompt):
         )
         out, err = process.communicate(input=prompt.encode(), timeout=60)
         if process.returncode != 0:
-            return f"⚠️ Ollama error: {err.decode()}"
+            return f" Ollama error: {err.decode()}"
         return out.decode().strip()
     except Exception as e:
-        return f"❌ LLM call failed: {str(e)}"
+        return f" LLM call failed: {str(e)}"
