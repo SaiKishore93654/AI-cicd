@@ -1,30 +1,22 @@
 import sys
-import webbrowser
 from log_analyzer import extract_errors, run_local_llm
+import webbrowser
 
-if len(sys.argv) < 2:
-    print(" Usage: python analyze_logs.py <log_file>")
+if len(sys.argv) != 2:
+    print("Usage: python analyze_logs.py <log_file>")
     sys.exit(1)
 
 log_file = sys.argv[1]
-with open(log_file, "r", encoding="utf-8") as f:
+
+with open(log_file, 'r') as f:
     log_text = f.read()
 
-# Save for dashboard
-with open("jenkins_log.txt", "w", encoding="utf-8") as f:
-    f.write(log_text)
-
-# Run analysis
 errors = extract_errors(log_text)
+prompt = f"You are a DevOps expert. This CI/CD log failed:\n{errors}\n\nWhat caused the issue and how to fix it?"
 
-if not errors.strip():
-    print(" Build successful. No issues found.")
-else:
-    prompt = f"You are a DevOps engineer. These errors occurred:\n\n{errors}\n\nHow do we fix them?"
-    result = run_local_llm(prompt)
-    print("Build failed. Ollama says:")
-    print(result)
+print("Build failed. Ollama says:")
+result = run_local_llm(prompt)
+print(result)
 
-# Auto-open browser dashboard
-print(" Opening browser tab for dashboard...")
+# Open dashboard after analysis
 webbrowser.open("http://localhost:8501")
