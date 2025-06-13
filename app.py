@@ -1,25 +1,16 @@
 import streamlit as st
 from log_analyzer import extract_errors, run_local_llm
+import os
 
-st.set_page_config(page_title="CI/CD AI Analyzer", layout="wide")
-st.title(" Ollama-Powered CI/CD Log Dashboard")
+st.set_page_config(page_title="CI/CD Log AI Helper", layout="wide")
+st.title(" CI/CD Log Analyzer with Local LLM (Ollama)")
 
-# Load log file
-try:
-    with open("jenkins_log.txt", "r", encoding="utf-8") as f:
-        log = f.read()
-except FileNotFoundError:
-    log = ""
-
-st.text_area("CI/CD Log", value=log, height=300, key="log")
+log = st.text_area("Paste your CI/CD log here:", height=300)
 
 if st.button("Analyze Log"):
-    errors = extract_errors(log)
-    if not errors.strip():
-        st.success(" Build successful. No errors.")
-    else:
-        prompt = f"Analyze the following CI/CD error log and suggest fixes:\n\n{errors}"
+    with st.spinner("Analyzing..."):
+        errors = extract_errors(log)
+        prompt = f"You are a DevOps expert. This CI/CD log failed:\n{errors}\n\nWhat caused the issue and how to fix it?"
         result = run_local_llm(prompt)
-        st.error(" Errors found in the build log.")
-        st.subheader(" Ollama Suggestion:")
-        st.code(result, language="text")
+        st.subheader(" AI Suggestion:")
+        st.code(result, language='text')
