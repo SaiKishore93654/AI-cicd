@@ -1,20 +1,16 @@
-import subprocess
+import sys
+import requests
 
-def analyze_log(text):
-    process = subprocess.Popen(
-        [r"C:\Users\saiki\AppData\Local\Programs\Ollama\ollama.exe", "run", "llama3"],
-        stdin=subprocess.PIPE,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
-        text=True
-    )
+log_file = sys.argv[1] if len(sys.argv) > 1 else "jenkins_log.txt"
 
-    stdout, stderr = process.communicate(f"Analyze this Jenkins log:\n{text}")
-    if stderr:
-        print("Error:", stderr)
-    print("\n🔍 AI Analysis:\n", stdout)
+with open(log_file, 'r') as f:
+    log_content = f.read()
 
-if __name__ == "__main__":
-    with open("jenkins_log.txt", "r") as f:
-        logs = f.read()
-    analyze_log(logs)
+response = requests.post("http://localhost:11434/api/generate", json={
+    "model": "llama3",  # or your custom model name
+    "prompt": f"Analyze this Jenkins CI/CD log:\n\n{log_content}",
+    "stream": False
+})
+
+print("=== AI Analysis Output ===")
+print(response.json().get("response", "No response"))
