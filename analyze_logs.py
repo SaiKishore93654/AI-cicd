@@ -1,20 +1,21 @@
-
-import sys
+# analyze_logs.py
 import subprocess
-import json
 
-log_input = sys.stdin.read()
+def analyze_log(text):
+    process = subprocess.Popen(
+        [r"C:\Users\saiki\AppData\Local\Programs\Ollama\ollama.exe", "run", "llama3"],
+        stdin=subprocess.PIPE,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True
+    )
 
-response = subprocess.run(
-    ["ollama", "run", "llama3"],
-    input=f"Analyze this Jenkins build log:\n\n{log_input}".encode(),
-    capture_output=True
-)
+    stdout, stderr = process.communicate(f"Analyze this Jenkins log:\n{text}")
+    if stderr:
+        print("Error:", stderr)
+    print("\n🔍 AI Analysis:\n", stdout)
 
-# If using stream output, handle JSON stream
-for line in response.stdout.splitlines():
-    try:
-        obj = json.loads(line)
-        print(obj.get("response", "").strip(), end='', flush=True)
-    except json.JSONDecodeError:
-        print(line.decode(), end='')
+if __name__ == "__main__":
+    with open("jenkins_log.txt", "r") as f:
+        logs = f.read()
+    analyze_log(logs)
