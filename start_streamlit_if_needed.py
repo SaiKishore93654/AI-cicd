@@ -8,13 +8,12 @@ def is_port_in_use(port):
         return s.connect_ex(('localhost', port)) == 0
 
 if is_port_in_use(8501):
-    print("[*] Starting Streamlit dashboard...")
-
+    print("Streamlit already running.")
 else:
-    print(" Starting Streamlit dashboard...")
+    print("Starting Streamlit dashboard...")
+    # Launch in a visible terminal using cmd
     subprocess.Popen(
-    "start cmd /k streamlit run app.py",
-    shell=True
-)
+        'start cmd /k streamlit run app.py',
+        shell=True
     )
-    time.sleep(3)  # wait for server to boot
+    time.sleep(5)
