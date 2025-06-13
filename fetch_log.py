@@ -5,7 +5,7 @@ import sys
 # Configuration — customize these before use
 JENKINS_URL = "http://localhost:8080"  # Your Jenkins URL
 JOB_NAME = "AI-CICD"                   # Your Jenkins job name
-USERNAME = "sai_script"                 # Jenkins user with API token access
+USERNAME = "helloworld"                 # Jenkins user with API token access
 API_TOKEN = "11cb8b0241218b62985fdf4022eff0852a"     # Jenkins API token for USERNAME
 
 def fetch_last_build_log():
