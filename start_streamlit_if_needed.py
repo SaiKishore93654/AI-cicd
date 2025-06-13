@@ -13,8 +13,8 @@ if is_port_in_use(8501):
 else:
     print(" Starting Streamlit dashboard...")
     subprocess.Popen(
-        ["streamlit", "run", "app.py"],
-        creationflags=subprocess.CREATE_NEW_CONSOLE,
-        cwd=os.getcwd()
+    "start cmd /k streamlit run app.py",
+    shell=True
+)
     )
     time.sleep(3)  # wait for server to boot
