@@ -8,7 +8,8 @@ def is_port_in_use(port):
         return s.connect_ex(('localhost', port)) == 0
 
 if is_port_in_use(8501):
-    print("✅ Streamlit already running on port 8501.")
+    print("[*] Starting Streamlit dashboard...")
+
 else:
     print("🚀 Starting Streamlit dashboard...")
     subprocess.Popen(
