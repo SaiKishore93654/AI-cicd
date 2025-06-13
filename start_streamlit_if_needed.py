@@ -11,7 +11,7 @@ if is_port_in_use(8501):
     print("[*] Starting Streamlit dashboard...")
 
 else:
-    print("🚀 Starting Streamlit dashboard...")
+    print(" Starting Streamlit dashboard...")
     subprocess.Popen(
         ["streamlit", "run", "app.py"],
         creationflags=subprocess.CREATE_NEW_CONSOLE,
