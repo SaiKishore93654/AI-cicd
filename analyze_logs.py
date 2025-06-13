@@ -1,4 +1,3 @@
-# analyze_logs.py
 import subprocess
 
 def analyze_log(text):
